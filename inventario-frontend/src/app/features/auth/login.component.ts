@@ -104,8 +104,8 @@ import { AuthService } from '../../core/services/auth.service';
 
           <div class="credentials-hint">
             <span class="hint-title">// credenciales de demo</span>
-            <div class="hint-row"><span class="hint-key">admin</span><span class="hint-sep">/</span><span class="hint-val">Admin123!</span></div>
-            <div class="hint-row"><span class="hint-key">ccl_user</span><span class="hint-sep">/</span><span class="hint-val">CCL2024#</span></div>
+            <div class="hint-row"><span class="hint-key">admin</span><span class="hint-sep">/</span><span class="hint-val">admin</span></div>
+            <div class="hint-row"><span class="hint-key">ccl_user</span><span class="hint-sep">/</span><span class="hint-val">Admin123!</span></div>
           </div>
         </form>
       </div>

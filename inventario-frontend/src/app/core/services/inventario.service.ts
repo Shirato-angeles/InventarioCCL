@@ -4,7 +4,7 @@ import { Producto, MovimientoRequest, MovimientoResponse } from '../../shared/mo
 
 @Injectable({ providedIn: 'root' })
 export class InventarioService {
-  private readonly API = 'http://localhost:5158';
+  private readonly API = 'http://localhost:5000';
 
   constructor(private http: HttpClient) {}
 

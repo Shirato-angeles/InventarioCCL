@@ -12,7 +12,7 @@ public class AuthController : ControllerBase
     private static readonly Dictionary<string, string> _usuarios = new()
     {
         { "admin", "Admin123!" },
-        { "ccl_user", "CCL2024#" }
+        { "ccl_user", "CCL_2026#" }
     };
 
     private readonly IJwtService _jwtService;

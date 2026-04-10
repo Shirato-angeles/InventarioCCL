@@ -54,7 +54,7 @@ psql -U postgres -d inventario_ccl -f database.sql
 
 ---
 
-## ⚙️ 2. Ejecutar el Backend (.NET 9)
+## ⚙️ 2. Ejecutar el Backend (.NET 10.0)
 
 Ajustar credenciales en InventarioCCL.API/appsettings.json si es necesario:
 
@@ -70,7 +70,7 @@ dotnet restore
 dotnet run
 ```
 
-- API: http://localhost:5158
+- API: http://localhost:5158 //  http://localhost:5000 ---- segun el puerto que arroje el backend en mi caso el 5000
 - Swagger: http://localhost:5158/swagger
 
 ---
@@ -92,7 +92,7 @@ Frontend disponible en: http://localhost:4200
 | Usuario    | Contraseña  |
 |---|---|
 | admin      | Admin123!   |
-| ccl_user   | CCL2024#    |
+| ccl_user   | CCL2026#    |
 
 ---
 
@@ -104,24 +104,29 @@ Frontend disponible en: http://localhost:4200
 | POST   | /productos/movimiento   | Sí   | Registrar entrada/salida |
 | GET    | /productos/inventario   | Sí   | Consultar inventario     |
 
+
+###Login
+
+```bash
+curl -X POST http://localhost:5158/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"usuario": "admin", "password": "Admin123!"}'
+```
+
+### Movimiento (con token)
+
+```bash
+curl -X POST http://localhost:5158/productos/movimiento \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TU_TOKEN_AQUI" \
+  -d '{"productoId": 1, "tipo": "entrada", "cantidad": 10}'
+```
+
+### Inventario
+
+```bash
+curl -X GET http://localhost:5158/productos/inventario \
+  -H "Authorization: Bearer TU_TOKEN_AQUI"
+```
 ---
 
-## 🗂️ Historial de commits sugerido
-
-```
-feat: initial project structure
-feat: add PostgreSQL connection with Entity Framework Core
-feat: implement JWT authentication service
-feat: add POST /auth/login endpoint
-feat: add POST /productos/movimiento endpoint
-feat: add GET /productos/inventario endpoint
-feat: configure CORS for Angular frontend
-feat: add Swagger with JWT Bearer support
-feat: add Angular 19 standalone project setup
-feat: implement login component with JWT auth
-feat: add HTTP interceptor for Bearer token injection
-feat: implement inventario component with search and filters
-feat: implement movimiento component with live preview
-feat: add auth guard and route protection
-docs: complete README and database SQL script
-```
