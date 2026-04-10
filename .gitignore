@@ -1,0 +1,17 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.log
+appsettings.Development.json
+
+## Angular
+inventario-frontend/node_modules/
+inventario-frontend/dist/
+inventario-frontend/.angular/
+
+## OS
+.DS_Store
+Thumbs.db
