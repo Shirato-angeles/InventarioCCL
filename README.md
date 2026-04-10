@@ -1,6 +1,6 @@
 # 📦 MiniSistema de Gestión de Inventario - CCL
 
-Sistema web full-stack para gestión de inventario de productos, con autenticación JWT, backend en C# (.NET 9) y frontend en Angular 19.
+Sistema web full-stack para gestión de inventario de productos, con autenticación JWT, backend en C# (.NET 10.0) y frontend en Angular 19.
 
 ---
 
@@ -31,7 +31,7 @@ InventarioCCL/
 
 | Herramienta   | Versión mínima |
 |---|---|
-| .NET SDK      | 9.0            |
+| .NET SDK      | 10.0            |
 | Node.js       | 18+            |
 | Angular CLI   | 19+            |
 | PostgreSQL    | 14+            |
@@ -70,7 +70,7 @@ dotnet restore
 dotnet run
 ```
 
-- API: http://localhost:5158 //  http://localhost:5000 ---- segun el puerto que arroje el backend en mi caso el 5000
+- API: http://localhost:5158 //  http://localhost:5000 ---- segun el puerto que arroje el backend en mi caso es el 5000
 - Swagger: http://localhost:5158/swagger
 
 ---
@@ -90,7 +90,7 @@ Frontend disponible en: http://localhost:4200
 ## 🔐 Credenciales de acceso
 
 | Usuario    | Contraseña  |
-|---|---|
+|------------|-------------|
 | admin      | Admin123!   |
 | ccl_user   | CCL2026#    |
 
