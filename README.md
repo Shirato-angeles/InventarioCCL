@@ -1,6 +1,7 @@
-# 📦 MiniSistema de Gestión de Inventario - CCL creado por Miguel Angel Hurtado
+# 📦 MiniSistema de Gestión de Inventario - CCL
+### Desarrollado por Miguel Angel Hurtado Garcia
 
-Sistema web full-stack para gestión de inventario de productos, con autenticación JWT, backend en C# (.NET 10.0) y frontend en Angular 19.
+Sistema web full-stack para gestión de inventario de productos, con autenticación JWT, backend en C# (.NET 9) y frontend en Angular 19.
 
 ---
 
@@ -29,12 +30,12 @@ InventarioCCL/
 
 ## ✅ Requisitos previos
 
-| Herramienta   | Versión mínima |
+| Herramienta | Versión mínima |
 |---|---|
-| .NET SDK      | 10.0            |
-| Node.js       | 18+            |
-| Angular CLI   | 19+            |
-| PostgreSQL    | 14+            |
+| .NET SDK    | 10.0            |
+| Node.js     | 18+            |
+| Angular CLI | 19+            |
+| PostgreSQL  | 14+            |
 
 ---
 
@@ -44,19 +45,21 @@ InventarioCCL/
 # Conectarse a PostgreSQL
 psql -U postgres
 
-# Crear la base de datos
+# Dentro del prompt de psql, crear la base de datos:
 CREATE DATABASE inventario_ccl;
 \q
 
-# Ejecutar el script SQL (crea tabla + datos iniciales)
+# Ejecutar el script SQL (crea la tabla e inserta 33 productos de prueba)
 psql -U postgres -d inventario_ccl -f database.sql
 ```
 
 ---
 
-## ⚙️ 2. Ejecutar el Backend (.NET 10.0)
+## ⚙️ 2. Configurar y ejecutar el Backend (.NET 10)
 
-Ajustar credenciales en InventarioCCL.API/appsettings.json si es necesario:
+### ⚠️ Paso obligatorio — ajustar credenciales de PostgreSQL
+
+Antes de correr el backend, abrir el archivo `InventarioCCL.API/appsettings.json` y reemplazar `TU_USUARIO` y `TU_PASSWORD` con las credenciales de su instalación local de PostgreSQL:
 
 ```json
 "ConnectionStrings": {
@@ -64,35 +67,76 @@ Ajustar credenciales en InventarioCCL.API/appsettings.json si es necesario:
 }
 ```
 
+> **Ejemplo con credenciales por defecto de PostgreSQL:**
+> ```json
+> "DefaultConnection": "Host=localhost;Port=5432;Database=inventario_ccl;Username=postgres;Password=postgres"
+> ```
+>
+> Si instaló PostgreSQL en **macOS con Homebrew**, el usuario suele ser su nombre de sesión y sin contraseña:
+> ```json
+> "DefaultConnection": "Host=localhost;Port=5432;Database=inventario_ccl;Username=su_usuario_mac;Password="
+> ```
+
+### Ejecutar
+
 ```bash
 cd InventarioCCL.API
 dotnet restore
 dotnet run
 ```
 
-- API: http://localhost:5158 //  http://localhost:5000 ---- segun el puerto que arroje el backend en mi caso es el 5000
-- Swagger: http://localhost:5158/swagger
+El backend quedará disponible en el puerto que asigne .NET (normalmente `5000` o `5158`). Revisar la salida de la terminal, que mostrará algo como:
+
+```
+Now listening on: http://localhost:5000
+```
+
+- **Swagger UI:** `http://localhost:{PUERTO}/swagger`
 
 ---
 
-## 🌐 3. Ejecutar el Frontend (Angular 19)
+## 🌐 3. Configurar y ejecutar el Frontend (Angular 19)
+
+### ⚠️ Paso obligatorio — ajustar el puerto del backend
+
+Si el backend quedó en un puerto diferente a `5000`, abrir los dos archivos siguientes y actualizar la URL:
+
+```
+inventario-frontend/src/app/core/services/auth.service.ts       → línea 4
+inventario-frontend/src/app/core/services/inventario.service.ts → línea 4
+```
+
+Cambiar:
+```ts
+private readonly API = 'http://localhost:5000';
+```
+por el puerto que arroje su backend, por ejemplo:
+```ts
+private readonly API = 'http://localhost:5158';
+```
+
+### Ejecutar
 
 ```bash
 cd inventario-frontend
 npm install
-npx ng serve
+ng serve
 ```
 
-Frontend disponible en: http://localhost:4200
+> Si `ng` no se reconoce: `npx ng serve`
+
+Frontend disponible en: **http://localhost:4200**
 
 ---
 
-## 🔐 Credenciales de acceso
+## 🔐 Credenciales de acceso a la aplicación
+
+Las credenciales están hardcodeadas en memoria en el backend (no requieren configuración en base de datos):
 
 | Usuario    | Contraseña  |
 |------------|-------------|
-| admin      | Admin123!   |
-| ccl_user   | CCL2026#    |
+| `admin`    | `Admin123!` |
+| `ccl_user` | `CCL2024#`  |
 
 ---
 
@@ -100,33 +144,44 @@ Frontend disponible en: http://localhost:4200
 
 | Método | Endpoint                | Auth | Descripción              |
 |--------|-------------------------|------|--------------------------|
-| POST   | /auth/login             | No   | Obtener JWT token        |
-| POST   | /productos/movimiento   | Sí   | Registrar entrada/salida |
-| GET    | /productos/inventario   | Sí   | Consultar inventario     |
+| POST   | `/auth/login`           | ❌   | Obtener JWT token        |
+| POST   | `/productos/movimiento` | ✅   | Registrar entrada/salida |
+| GET    | `/productos/inventario` | ✅   | Consultar inventario     |
 
+### Ejemplos con curl
 
-###Login
+Reemplazar `{PUERTO}` con el puerto real del backend.
 
+**Login:**
 ```bash
-curl -X POST http://localhost:5158/auth/login \
+curl -X POST http://localhost:{PUERTO}/auth/login \
   -H "Content-Type: application/json" \
   -d '{"usuario": "admin", "password": "Admin123!"}'
 ```
 
-### Movimiento (con token)
-
+**Registrar movimiento:**
 ```bash
-curl -X POST http://localhost:5158/productos/movimiento \
+curl -X POST http://localhost:{PUERTO}/productos/movimiento \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer TU_TOKEN_AQUI" \
+  -H "Authorization: Bearer TU_TOKEN" \
   -d '{"productoId": 1, "tipo": "entrada", "cantidad": 10}'
 ```
 
-### Inventario
-
+**Consultar inventario:**
 ```bash
-curl -X GET http://localhost:5158/productos/inventario \
-  -H "Authorization: Bearer TU_TOKEN_AQUI"
+curl -X GET http://localhost:{PUERTO}/productos/inventario \
+  -H "Authorization: Bearer TU_TOKEN"
 ```
+
+---
+
+## 🧪 Probar con Swagger (recomendado)
+
+1. Abrir `http://localhost:{PUERTO}/swagger`
+2. Ejecutar `POST /auth/login` con las credenciales de arriba
+3. Copiar el valor del campo `token` de la respuesta
+4. Clic en el botón **Authorize** (🔒) → ingresar `Bearer {token}`
+5. Ya puede probar `GET /productos/inventario` y `POST /productos/movimiento`
+
 ---
 
