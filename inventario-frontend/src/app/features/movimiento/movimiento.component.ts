@@ -166,7 +166,7 @@ import { Producto, MovimientoResponse } from '../../shared/models/models';
                     </span>
                   </div>
                 </div>
-                <div class="delta-row" *ngIf="form.get('cantidad')?.value > 0">
+               <div class="delta-row" *ngIf="(form.get('cantidad')?.value ?? 0) > 0">
                   <span class="delta-label">VARIACIÓN</span>
                   <span class="delta-value" [class.delta-pos]="tipoActual === 'entrada'" [class.delta-neg]="tipoActual === 'salida'">
                     {{ tipoActual === 'entrada' ? '+' : '-' }}{{ form.get('cantidad')?.value }} uds
@@ -595,7 +595,7 @@ export class MovimientoComponent implements OnInit {
         const p = this.productoSeleccionado();
         if (p) {
           this.historial.update(h => [{
-            tipo, nombre: p.nombre, cantidad: Number(cantidad)
+            tipo: tipo as string, nombre: p.nombre, cantidad: Number(cantidad)
           }, ...h].slice(0, 8));
           // Update local stock
           this.productos.update(list => list.map(x =>

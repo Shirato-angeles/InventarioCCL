@@ -6,7 +6,7 @@ import { LoginRequest, LoginResponse } from '../../shared/models/models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = 'http://localhost:5158';
+  private readonly API = 'http://localhost:5000';
   private readonly TOKEN_KEY = 'ccl_token';
   private readonly USER_KEY = 'ccl_user';
 
