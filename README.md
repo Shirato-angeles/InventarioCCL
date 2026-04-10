@@ -1,4 +1,4 @@
-# 📦 MiniSistema de Gestión de Inventario - CCL
+# 📦 MiniSistema de Gestión de Inventario - CCL creado por Miguel Angel Hurtado
 
 Sistema web full-stack para gestión de inventario de productos, con autenticación JWT, backend en C# (.NET 10.0) y frontend en Angular 19.
 
